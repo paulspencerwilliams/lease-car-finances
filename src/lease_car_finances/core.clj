@@ -1,5 +1,6 @@
 (ns lease-car-finances.core
-  (require [clj-time.core :as t]))
+  (require [clj-time.core :as t]
+           [clj-time.format :as f]))
 
 (defrecord Fillup [date mileage quantity cost])
 
@@ -11,7 +12,7 @@
    (->Fillup (t/date-time 2016 6 30) 1577 36.95 40.61)
    (->Fillup (t/date-time 2016 7 6) 2063 39.71 44.83)
    (->Fillup (t/date-time 2016 7 9) 2386 25.58 28.88)
-   (->Fillup (t/date-time 2016 7 16) 2783 32.72 36.94)])
+   (->Fillup (t/date-time 2016 7 12) 2783 32.72 36.94)])
 
 (def day-of-purchase (first current-state))
 
