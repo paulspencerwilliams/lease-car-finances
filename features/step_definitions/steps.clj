@@ -1,10 +1,16 @@
 (require '[lease-car-finances.repository :as repository]
          '[lease-car-finances.core :as core]
+         '[lease-car-finances.home-page :as home-page]
          '[clj-time.core :as t]
          '[clj-time.format :as f]
          '[clj-time.coerce :as c])
 
 (use 'clojure.walk)
+(use 'clojure.test)
+(import org.openqa.selenium.firefox.FirefoxDriver)
+
+(def driver (atom false))
+
 
 (Given #"^the following recorded fill ups$" [fill-ups]
        (->>
@@ -17,6 +23,10 @@
                    (repository/fillup)))
          repository/create))
 
-(Then #"^I will see a graph presenting$" []
-      (comment Express the Regexp above with the code you wish you had)
-      (throw (cucumber.runtime.PendingException.)))
+(Then #"^I will see a graph presenting$" [expected-mpgs-over-time]
+      (is (= expected-mpgs-over-time (home-page/mpgs-over-time @driver))))
+
+(Before []
+        (reset! driver (new FirefoxDriver)))
+
+(After [] (.close @driver))
