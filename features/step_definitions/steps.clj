@@ -1,5 +1,4 @@
 (require '[lease-car-finances.repository :as repository]
-         '[lease-car-finances.core :as core]
          '[lease-car-finances.home-page :as home-page]
          '[clj-time.core :as t]
          '[clj-time.format :as f]
