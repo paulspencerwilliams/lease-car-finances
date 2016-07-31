@@ -1,10 +1,25 @@
 (ns lease-car-finances.routes.home
-
+  (:use clojure.string)
   (:require [compojure.core :refer :all]
-            [lease-car-finances.views.layout :as layout]))
+            [lease-car-finances.repository :as repository]
+            [lease-car-finances.views.layout :as layout]
+            [clj-time.coerce :as c]
+            [clj-time.core :as t]))
 
-(defn home []
-  (layout/common [:h1 "lease car finances"]))
+(defn home [mpgs]
+  (->> mpgs
+
+      (map
+        (fn [mpg]
+          (let [date (c/from-date (:date mpg))
+                year (t/year date)
+                month (- (t/month date) 1)
+                day (t/day date)]
+            (str "[Date.UTC(" year ", " month ", " day "), " (:mpg mpg) "]")))
+        )
+       (join ",")
+       (format "[%s]")
+      (layout/common)))
 
 (defroutes home-routes
-           (GET "/" [] (home)))
+           (GET "/" [] (home (repository/mpgs))))
