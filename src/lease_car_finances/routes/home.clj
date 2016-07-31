@@ -2,13 +2,12 @@
   (:use clojure.string)
   (:require [compojure.core :refer :all]
             [lease-car-finances.repository :as repository]
-            [lease-car-finances.views.layout :as layout]
+            [lease-car-finances.views.home :as home]
             [clj-time.coerce :as c]
             [clj-time.core :as t]))
 
 (defn home [mpgs]
   (->> mpgs
-
       (map
         (fn [mpg]
           (let [date (c/from-date (:date mpg))
@@ -19,7 +18,7 @@
         )
        (join ",")
        (format "[%s]")
-      (layout/common)))
+      (home/view)))
 
 (defroutes home-routes
            (GET "/" [] (home (repository/mpgs))))
